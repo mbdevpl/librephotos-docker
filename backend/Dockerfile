@@ -3,6 +3,8 @@ FROM reallibrephotos/librephotos-base:dev
 
 ARG USER_ID=root
 ARG GROUP_ID=root
+ARG GIT_REPOSITORY="https://github.com/LibrePhotos/librephotos"
+ARG GIT_VERSION="HEAD"
 USER ${USER_ID}
 
 ARG DEBUG
@@ -11,7 +13,8 @@ ARG IMAGE_TAG
 ENV IMAGE_TAG ${IMAGE_TAG}
 
 WORKDIR /code
-RUN git clone --depth 1 https://github.com/LibrePhotos/librephotos .
+RUN git clone ${GIT_REPOSITORY} .
+RUN git checkout ${GIT_VERSION}
 USER root
 RUN pip install --break-system-packages --no-cache-dir -r requirements.txt
 RUN if [ "$DEBUG" = 1 ] ; then \
