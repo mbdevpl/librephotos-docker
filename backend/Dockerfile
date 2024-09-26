@@ -1,10 +1,15 @@
 FROM reallibrephotos/librephotos-base:dev
 # actual project
 
-ARG USER_ID=root
-ARG GROUP_ID=root
+ARG USER_ID=0
+ARG GROUP_ID=0
 ARG GIT_REPOSITORY="https://github.com/LibrePhotos/librephotos"
 ARG GIT_VERSION="HEAD"
+
+RUN addgroup --gid "${GROUP_ID}" librephotos \
+  || echo "group ${GROUP_ID} already exists, so not adding it"
+RUN adduser --disabled-password --gecos "LibrePhotos" --uid "${USER_ID}" --gid "${GROUP_ID}" librephotos \
+  || echo "user ${USER_ID} already exists, so not adding it"
 USER ${USER_ID}
 
 ARG DEBUG
