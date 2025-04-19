@@ -6,18 +6,15 @@ ARG MLVALIDATION
 ARG IMAGE_TAG
 ENV IMAGE_TAG ${IMAGE_TAG}
 
-RUN apt-get update && apt-get install nvidia-modprobe -y
-
 WORKDIR /code
 RUN git clone --depth 1 https://github.com/LibrePhotos/librephotos .
-run pip install --ignore-installed blinker==1.7.0
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --break-system-packages -r requirements.txt
 RUN if [ "$DEBUG" = 1 ] ; then \
   pip install -r requirements.dev.txt; \
   fi
 RUN if [ "$MLVALIDATION" = 1 ] ; then \
   apt-get update && apt-get install default-jre -y; \
-  pip install -r requirements.mlval.txt; \
+  pip install --break-system-packages -r requirements.mlval.txt; \
   fi
 EXPOSE 8001
 
